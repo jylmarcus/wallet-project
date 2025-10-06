@@ -31,7 +31,8 @@ import lombok.ToString;
     name = "users",
     uniqueConstraints = {
         @UniqueConstraint(name = "uk_users_username", columnNames = {"username"}),
-        @UniqueConstraint(name = "uk_users_email", columnNames = {"email"})
+        @UniqueConstraint(name = "uk_users_email", columnNames = {"email"}),
+        @UniqueConstraint(name = "uk_users_provider_provider_id", columnNames = {"provider", "provider_id"})
     }
 )
 @Getter
@@ -61,11 +62,16 @@ public class User {
     @Column(name = "email", nullable = false, unique = true, length = 255)
     private String email;
 
-    @NotBlank
     @Size(min = 8, max = 255)
-    @Column(name = "password_hash", nullable = false, length = 255)
+    @Column(name = "password_hash", length = 255)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String passwordHash;
+
+    @Column(name = "provider", length = 50)
+    private String provider;
+
+    @Column(name = "provider_id", length = 255)
+    private String providerId;
 
     @Size(max = 100)
     @Column(name = "roles", nullable = false, length = 100)
